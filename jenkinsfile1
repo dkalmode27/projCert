@@ -1,0 +1,20 @@
+pipeline {
+  agent {
+    label 'Jenkins-slave1'
+    }
+  stages {
+    stage('checkout from github') {
+      steps {
+        git 'https://github.com/dkalmode27/projCert.git'
+      }
+    }
+    stage('Build docker image') {
+      steps {
+        withDockerRegistry([credentialsId: "docker-login", url: ""]) {
+          def dockerfile = 'dockerfile'
+          def customImage = docker.build("my-image:${env.BUILD_NUMBER}", " -f ${dockerfile} .")
+        }
+      }
+    }
+  }
+}
