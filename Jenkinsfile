@@ -8,7 +8,7 @@ pipeline {
   stages {
     stage('Docker Build') {
       steps {
-        sh 'docker build -t dkalmode27/PHP:$BUILD_NUMBER .'
+        sh 'docker build -t dkalmode27/phpapp:$BUILD_NUMBER .'
       }
     }
     stage('Docker Login') {
