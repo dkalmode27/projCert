@@ -18,7 +18,7 @@ pipeline {
     }
     stage('Docker Run') {
       steps {
-        sh 'docker run -dt dkalmode27/PHP:$BUILD_NUMBER'
+        sh 'docker run -dt dkalmode27/phpapp:$BUILD_NUMBER'
       }
     }
   }
