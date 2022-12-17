@@ -12,7 +12,7 @@ pipeline {
       steps {
         withDockerRegistry([credentialsId: "docker-login", url: ""]) {
           def dockerfile = 'dockerfile'
-          def customImage = docker.build("my-image:${env.BUILD_NUMBER}", " -f ${dockerfile} .")
+          def customImage = docker.build("my-image:${env.BUILD_NUMBER}", " -f ${dockerfile} .") 
         }
       }
     }
