@@ -3,10 +3,9 @@ pipeline {
     label 'Jenkins-slave1'
     }
   stages {
-    stage('checkout from github') {
-      steps {
-        git 'https://github.com/dkalmode27/projCert.git'
-      }
+    stage('Clone repository') {
+		  checkout scm
+	     }
     }
     stage('Build docker image') {
       steps {
