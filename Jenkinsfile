@@ -6,6 +6,11 @@ pipeline {
     DOCKERHUB_CREDENTIALS = credentials('dockerhub-login')
   }
   stages {
+    stage('Remove old container') {
+      steps {
+        sh 'docker rm php-application -f'
+      }
+      
     stage('Docker Build') {
       steps {
         sh 'docker build -t dkalmode27/phpapp:$BUILD_NUMBER .'
@@ -18,7 +23,7 @@ pipeline {
     }
     stage('Docker Run') {
       steps {
-        sh 'docker run -dt -p 8080:80 dkalmode27/phpapp:$BUILD_NUMBER'
+        sh 'docker run -dt -p 8080:80 --name php-application dkalmode27/phpapp:$BUILD_NUMBER'
       }
     }
   }
