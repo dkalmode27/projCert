@@ -1,4 +1,4 @@
 FROM devopsedu/webapp
 MAINTAINER Dnyaneshwar Kalmode
 ADD website /var/www/html
-EXPOSE 8080
+EXPOSE 80
