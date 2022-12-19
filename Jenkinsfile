@@ -11,13 +11,19 @@ pipeline {
   }
   
   stages {
-    stage('Install and configure puppet agent') {
+    stage('Install and configure puppet agent on test server') {
       steps {
         sh 'ansible --version'
       }
     }
     
-    stage('Remove old container') {
+    stage('Install docker on test server') {
+      steps {
+        sh 'ansible --version'
+      }
+    }
+    
+    stage('Remove old running container') {
       agent { 
         label 'Jenkins-slave1' 
       }
@@ -25,7 +31,8 @@ pipeline {
         sh 'docker rm php-application -f'
       }
     } 
-    stage('Docker Build') {
+    
+    stage('Build new docker image with website changes') {
       agent { 
         label 'Jenkins-slave1' 
       }
@@ -33,7 +40,7 @@ pipeline {
         sh 'docker build -t dkalmode27/phpapp:$BUILD_NUMBER .'
       }
     }
-    stage('Docker Login') {
+    stage('Login to docker hub to pull base PHP image') {
       agent { 
         label 'Jenkins-slave1' 
       }
@@ -41,7 +48,7 @@ pipeline {
         sh 'echo $DOCKERHUB_CREDENTIALS_PSW | docker login -u $DOCKERHUB_CREDENTIALS_USR --password-stdin'
       }
     }
-    stage('Docker Run') {
+    stage('Run new docker container using updated application image') {
       agent { 
         label 'Jenkins-slave1' 
       }
