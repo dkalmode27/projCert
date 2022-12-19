@@ -1,0 +1,7 @@
+---
+- name: Install puppet agent on the test server   
+  hosts: test-server
+  become: yes
+  become_user: root
+  roles:
+  - puppet-agent
