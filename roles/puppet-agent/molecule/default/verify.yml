@@ -1,0 +1,18 @@
+---
+- name: Verify
+  hosts: all
+  tasks:
+  - name: Linux | Puppet service should be functionnal
+    command: "{{ (ansible_service_mgr == 'systemd') | ternary('systemctl status puppet', '/etc/init.d/puppet status') }}"
+    register: puppet_service_result
+
+  - name: Linux | Puppet command should be functionnal
+    command: /opt/puppetlabs/bin/puppet --version
+    register: puppet_cli_result
+
+  - name: Linux | Verify commands outputs
+    assert:
+      that:
+        - puppet_service_result.rc == 0
+        - puppet_cli_result.rc == 0
+      success_msg: "All tests passed"
