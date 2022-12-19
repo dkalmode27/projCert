@@ -13,7 +13,7 @@ pipeline {
   stages {
     stage('Install and configure puppet agent on test server') {
       steps {
-        sh 'ansible-playbook credentialsId: ansible-auth Config-puppet-agent.yml'
+        sh 'ansible-playbook Config-puppet-agent.yml credentialsId: ansible-auth'
       }
     }
     
