@@ -19,7 +19,7 @@ pipeline {
     
     stage('Install docker on test server') {
       steps {
-        sh 'ansible --version'
+        sh 'ansible-playbook install-docker.yml'
       }
     }
     
