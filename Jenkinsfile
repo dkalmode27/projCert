@@ -13,7 +13,7 @@ pipeline {
   stages {
     stage('Install and configure puppet agent') {
       steps {
-        sh 'ansible-playbook main.yml'
+        sh 'ansible --version'
       }
     }
     
