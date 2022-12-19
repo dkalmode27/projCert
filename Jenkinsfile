@@ -1,16 +1,22 @@
+def AGENT_LABEL_MASTER = "Built-In-Node"
+def AGENT_LABEL_SLAVE = "Jenkins-slave1"
+
 pipeline {
+  agent {
+    label "${AGENT_LABEL_MASTER}"
+    }
+  
   environment {
     DOCKERHUB_CREDENTIALS = credentials('dockerhub-login')
   }
+  
   stages {
-    agent { 
-        label 'Built-In-Node' 
-      }
     stage('Install and configure puppet agent') {
       steps {
         sh 'ansible-playbook main.yml'
       }
     }
+    
     stage('Remove old container') {
       agent { 
         label 'Jenkins-slave1' 
