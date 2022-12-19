@@ -11,16 +11,16 @@ pipeline {
   }
   
   stages {
+    
     stage('Install and configure puppet agent on test server') {
       steps {
         ansiblePlaybook colorized: true, credentialsId: 'ansible-auth', disableHostKeyChecking: true, playbook: 'Config-puppet-agent.yml'
-        sh 'ansible-playbook Config-puppet-agent.yml credentialsId: ansible-auth'
       }
     }
     
     stage('Install docker on test server') {
       steps {
-        sh 'ansible-playbook install-docker.yml'
+        ansiblePlaybook colorized: true, credentialsId: 'ansible-auth', disableHostKeyChecking: true, playbook: 'install-docker.yml'
       }
     }
     
@@ -41,6 +41,7 @@ pipeline {
         sh 'docker build -t dkalmode27/phpapp:$BUILD_NUMBER .'
       }
     }
+    
     stage('Login to docker hub to pull base PHP image') {
       agent { 
         label 'Jenkins-slave1' 
@@ -49,6 +50,7 @@ pipeline {
         sh 'echo $DOCKERHUB_CREDENTIALS_PSW | docker login -u $DOCKERHUB_CREDENTIALS_USR --password-stdin'
       }
     }
+    
     stage('Run new docker container using updated application image') {
       agent { 
         label 'Jenkins-slave1' 
@@ -58,6 +60,7 @@ pipeline {
       }
     }
   }
+  
   post {
     always {
       sh 'docker logout'
