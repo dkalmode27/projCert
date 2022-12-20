@@ -47,7 +47,7 @@ pipeline {
         label 'Jenkins-slave1' 
       }
       steps {
-        sh 'docker stop php-application -f'
+        sh 'docker stop php-application'
       }
     } 
     
@@ -63,7 +63,7 @@ pipeline {
   
   post {
     
-    failure {
+    FAILURE {
      sh 'docker rm php-application -f'
       }
     
