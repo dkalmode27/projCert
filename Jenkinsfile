@@ -64,7 +64,7 @@ pipeline {
   post {
     
     failure {
-     sh 'docker run -dt -p 8080:80 --name php-application dkalmode27/phpapp:$BUILD_NUMBER - 1'
+     sh 'docker rm php-application -f'
       }
     
     always {
