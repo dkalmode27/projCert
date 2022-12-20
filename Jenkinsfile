@@ -24,16 +24,7 @@ pipeline {
       }
     }
     
-    stage('Remove old running container') {
-      agent { 
-        label 'Jenkins-slave1' 
-      }
-      steps {
-        sh 'docker rm php-application -f'
-      }
-    } 
-    
-    stage('Build new docker image with website changes') {
+    stage('Build new docker image with PHP website changes') {
       agent { 
         label 'Jenkins-slave1' 
       }
@@ -51,6 +42,15 @@ pipeline {
       }
     }
     
+    stage('Stop previous version application container') {
+      agent { 
+        label 'Jenkins-slave1' 
+      }
+      steps {
+        sh 'docker stop php-application -f'
+      }
+    } 
+    
     stage('Run new docker container using updated application image') {
       agent { 
         label 'Jenkins-slave1' 
@@ -62,6 +62,11 @@ pipeline {
   }
   
   post {
+    
+    failure {
+     sh 'docker run -dt -p 8080:80 --name php-application dkalmode27/phpapp:$BUILD_NUMBER - 1'
+      }
+    
     always {
       sh 'docker logout'
     }
