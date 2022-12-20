@@ -26,7 +26,7 @@ pipeline {
     
     stage('Build new docker image with PHP website changes') {
       agent { 
-        label 'Jenkins-slave1' 
+        label "${AGENT_LABEL_SLAVE}" 
       }
       steps {
         sh 'docker build -t dkalmode27/phpapp:$BUILD_NUMBER .'
@@ -35,25 +35,25 @@ pipeline {
     
     stage('Login to docker hub to pull base PHP image') {
       agent { 
-        label 'Jenkins-slave1' 
+        label "${AGENT_LABEL_SLAVE}"  
       }
       steps {
         sh 'echo $DOCKERHUB_CREDENTIALS_PSW | docker login -u $DOCKERHUB_CREDENTIALS_USR --password-stdin'
       }
     }
     
-    stage('Stop previous version application container') {
+    stage('Stop and remove previous version of PHP application container') {
       agent { 
-        label 'Jenkins-slave1' 
+        label "${AGENT_LABEL_SLAVE}"  
       }
       steps {
-        sh 'docker stop php-application'
+        sh 'docker rm php-application -f'
       }
     } 
     
     stage('Run new docker container using updated application image') {
       agent { 
-        label 'Jenkins-slave1' 
+        label "${AGENT_LABEL_SLAVE}"  
       }
       steps {
         sh 'docker run -dt -p 8080:80 --name php-application dkalmode27/phpapp:$BUILD_NUMBER'
@@ -62,10 +62,6 @@ pipeline {
   }
   
   post {
-    
-    failure {
-     sh 'docker rm php-application -f'
-      }
     
     always {
       sh 'docker logout'
