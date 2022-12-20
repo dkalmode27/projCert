@@ -63,7 +63,7 @@ pipeline {
   
   post {
     
-    FAILURE {
+    failure {
      sh 'docker rm php-application -f'
       }
     
