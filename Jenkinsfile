@@ -24,21 +24,21 @@ pipeline {
       }
     }
     
-    stage('Build new docker image with PHP website changes') {
-      agent { 
-        label "${AGENT_LABEL_SLAVE}" 
-      }
-      steps {
-        sh 'docker build -t dkalmode27/phpapp:$BUILD_NUMBER .'
-      }
-    }
-    
     stage('Login to docker hub to pull base PHP image') {
       agent { 
         label "${AGENT_LABEL_SLAVE}"  
       }
       steps {
         sh 'echo $DOCKERHUB_CREDENTIALS_PSW | docker login -u $DOCKERHUB_CREDENTIALS_USR --password-stdin'
+      }
+    }
+    
+    stage('Build new docker image with PHP website changes') {
+      agent { 
+        label "${AGENT_LABEL_SLAVE}" 
+      }
+      steps {
+        sh 'docker build -t dkalmode27/phpapp:$BUILD_NUMBER .'
       }
     }
     
