@@ -1,5 +1,5 @@
 def AGENT_LABEL_MASTER = "Built-In-Node"
-def AGENT_LABEL_SLAVE = "Jenkins-slave1"
+def AGENT_LABEL_SLAVE = "Built-In-Node"
 
 pipeline {
   agent {
